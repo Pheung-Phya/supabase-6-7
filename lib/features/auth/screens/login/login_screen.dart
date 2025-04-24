@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_6_7/features/auth/screens/login/widgets/t_button_media.dart';
-import 'package:supabase_6_7/features/auth/screens/login/widgets/t_header_login.dart';
+import 'package:supabase_6_7/common/widgets/button/t_button_media.dart';
+import 'package:supabase_6_7/common/widgets/text/t_header_auth.dart';
 import 'package:supabase_6_7/features/auth/screens/login/widgets/t_login_form.dart';
 import 'package:supabase_6_7/utils/constant/t_sizes.dart';
 import 'package:supabase_6_7/utils/constant/t_text.dart';
@@ -22,7 +22,7 @@ class LoginScreen extends StatelessWidget {
           child: Column(
             children: [
               /// - Header
-              THeaderLogin(),
+              THeaderAuth(title: TText.headSignInTitle),
               SizedBox(height: TSizes.spaceBtwSections),
 
               /// - Form Login
