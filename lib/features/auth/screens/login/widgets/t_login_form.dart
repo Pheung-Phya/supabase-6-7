@@ -1,22 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_6_7/controllers/auth_controller.dart';
 import 'package:supabase_6_7/features/auth/screens/sign_up/sign_up_screen.dart';
 import 'package:supabase_6_7/utils/constant/t_sizes.dart';
 import 'package:supabase_6_7/utils/constant/t_text.dart';
 
 class TLoginForm extends StatelessWidget {
-  const TLoginForm({super.key});
+  TLoginForm({super.key});
+
+  final controller = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: controller.formKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
         child: Column(
           children: [
-            TextFormField(decoration: InputDecoration(hintText: TText.email)),
+            TextFormField(
+              controller: controller.emailController,
+              validator: (value) {
+                if (value != null && value.isEmail) {
+                  return null;
+                }
+                return "Valid email is required";
+              },
+              decoration: InputDecoration(hintText: TText.email),
+            ),
             SizedBox(height: TSizes.spaceBtwItems),
             TextFormField(
+              controller: controller.passwordController,
+              obscureText: true,
+              validator: (value) {
+                if (value == null || value.length < 6) {
+                  return "Password must be at least 6 characters";
+                }
+                return null;
+              },
               decoration: InputDecoration(hintText: TText.passworld),
             ),
             SizedBox(height: TSizes.spaceBtwItems / 2),
@@ -27,7 +48,7 @@ class TLoginForm extends StatelessWidget {
                   TText.rememberMe,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                Spacer(),
+                const Spacer(),
                 TextButton(onPressed: () {}, child: Text(TText.forgotPassword)),
               ],
             ),
@@ -35,7 +56,14 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  if (controller.formKey.currentState!.validate()) {
+                    controller.signIn(
+                      controller.emailController.text.trim(),
+                      controller.passwordController.text.trim(),
+                    );
+                  }
+                },
                 child: Text(TText.signInButton),
               ),
             ),
@@ -43,7 +71,7 @@ class TLoginForm extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton(
-                onPressed: () => Get.to(SignUpScreen()),
+                onPressed: () => Get.to(() => SignUpScreen()),
                 child: Text(TText.createAccountButton),
               ),
             ),
