@@ -9,11 +9,11 @@ class TLoginForm extends StatelessWidget {
   TLoginForm({super.key});
 
   final controller = Get.find<AuthController>();
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: controller.formKey,
+      key: _formKey,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: TSizes.spaceBtwSections),
         child: Column(
@@ -57,7 +57,7 @@ class TLoginForm extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  if (controller.formKey.currentState!.validate()) {
+                  if (_formKey.currentState!.validate()) {
                     controller.signIn(
                       controller.emailController.text.trim(),
                       controller.passwordController.text.trim(),

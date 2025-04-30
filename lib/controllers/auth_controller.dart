@@ -10,10 +10,11 @@ class AuthController extends GetxController {
 
   final AuthService _authService = AuthService();
   Rxn<User> currentUser = Rxn<User>();
-  final formKey = GlobalKey<FormState>();
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
 
   @override
   void onInit() {
@@ -26,10 +27,16 @@ class AuthController extends GetxController {
     currentUser.value = _authService.currentUser;
   }
 
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(
+      String email, String password, String firstName, String lastName) async {
     try {
-      await _authService.signUp(email: email, password: password);
+      await _authService.signUp(
+          email: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName);
       Get.snackbar("Success", "Account created");
+      Get.offAll(() => NavigateMenu());
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
