@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:supabase_6_7/features/auth/screens/login/login_screen.dart';
-import 'package:supabase_6_7/navigate_menu.dart';
 import 'package:supabase_6_7/services/auth_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthController extends GetxController {
-  static AuthController instance = Get.put(AuthController());
-
   final AuthService _authService = AuthService();
   Rxn<User> currentUser = Rxn<User>();
 
@@ -27,6 +23,17 @@ class AuthController extends GetxController {
     currentUser.value = _authService.currentUser;
   }
 
+  @override
+  void dispose() {
+    print('============================================');
+
+    emailController.dispose();
+    passwordController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
+    super.dispose();
+  }
+
   Future<void> signUp(
       String email, String password, String firstName, String lastName) async {
     try {
@@ -36,7 +43,7 @@ class AuthController extends GetxController {
           firstName: firstName,
           lastName: lastName);
       Get.snackbar("Success", "Account created");
-      Get.offAll(() => NavigateMenu());
+      Get.offAllNamed('/navigate');
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
@@ -46,7 +53,7 @@ class AuthController extends GetxController {
     try {
       await _authService.signIn(email: email, password: password);
       Get.snackbar("Success", "Signed in");
-      Get.offAll(NavigateMenu());
+      Get.offAllNamed('/navigate');
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
@@ -56,7 +63,8 @@ class AuthController extends GetxController {
     try {
       await _authService.signOut();
       Get.snackbar("Success", "Signed out");
-      Get.offAll(LoginScreen());
+      clearFormFields();
+      Get.offAllNamed('/login');
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
@@ -96,4 +104,11 @@ class AuthController extends GetxController {
   //     Get.snackbar("Error", e.toString());
   //   }
   // }
+
+  void clearFormFields() {
+    emailController.clear();
+    passwordController.clear();
+    firstNameController.clear();
+    lastNameController.clear();
+  }
 }

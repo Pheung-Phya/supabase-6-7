@@ -6,6 +6,7 @@ class NavigateMenu extends StatelessWidget {
   NavigateMenu({super.key});
 
   final controller = Get.put(NavigationController());
+  final authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +25,10 @@ class NavigateMenu extends StatelessWidget {
                 ),
               )),
               ListTile(
-                onTap: AuthController.instance.signOut,
+                onTap: authController.signOut,
               ),
               ElevatedButton(
-                  onPressed: AuthController.instance.signOut,
-                  child: Text('Log Out'))
+                  onPressed: authController.signOut, child: Text('Log Out'))
             ],
           ),
         ),

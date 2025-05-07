@@ -9,7 +9,7 @@ class AuthService {
       required String firstName,
       required String lastName}) {
     return _client.auth.signUp(email: email, password: password, data: {
-      "fullName": "$firstName $lastName",
+      "name": "$firstName $lastName",
     });
   }
 
