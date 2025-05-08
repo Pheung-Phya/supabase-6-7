@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:supabase_6_7/controllers/auth_controller.dart';
+import 'package:supabase_6_7/features/auth/controllers/auth_controller.dart';
+import 'package:supabase_6_7/features/store/screen/product_form_view.dart';
+import 'package:supabase_6_7/features/store/screen/product_list_view.dart';
 
 class NavigateMenu extends StatelessWidget {
   NavigateMenu({super.key});
@@ -55,17 +57,13 @@ class NavigationController extends GetxController {
   RxInt currentPage = 0.obs;
 
   final screens = [
-    Container(
-      color: Colors.amber,
-    ),
+    ProductListView(),
     Container(
       color: Colors.red,
     ),
     Container(
       color: Colors.blue,
     ),
-    Container(
-      color: const Color.fromARGB(255, 86, 243, 33),
-    ),
+    ProductFormView()
   ];
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_6_7/common/widgets/input/t_text_form.dart';
-import 'package:supabase_6_7/controllers/auth_controller.dart';
+import 'package:supabase_6_7/features/auth/controllers/auth_controller.dart';
 import 'package:supabase_6_7/utils/constant/t_sizes.dart';
 import 'package:supabase_6_7/utils/constant/t_text.dart';
 

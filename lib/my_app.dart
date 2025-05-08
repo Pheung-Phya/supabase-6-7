@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_6_7/binding/auth_binding.dart';
 import 'package:supabase_6_7/binding/navigation_bindings.dart';
-import 'package:supabase_6_7/controllers/auth_controller.dart';
+import 'package:supabase_6_7/features/auth/controllers/auth_controller.dart';
 import 'package:supabase_6_7/features/auth/screens/login/login_screen.dart';
 import 'package:supabase_6_7/features/auth/screens/sign_up/sign_up_screen.dart';
 import 'package:supabase_6_7/navigate_menu.dart';
