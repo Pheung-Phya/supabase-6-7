@@ -20,7 +20,8 @@ class ProductListView extends StatelessWidget {
           itemBuilder: (_, index) {
             final product = controller.list[index];
             return ListTile(
-              leading: product.imageUrl != null
+              leading: (product.imageUrl != null &&
+                      product.imageUrl!.isNotEmpty)
                   ? CachedNetworkImage(imageUrl: product.imageUrl!, width: 50)
                   : null,
               title: Text(product.name),

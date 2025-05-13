@@ -9,7 +9,7 @@ class ProductService {
 
     return response
         .map((e) => Product(
-              uuid: e['uuid'],
+              uuid: e['id'],
               name: e['name'],
               price: (e['price'] as num).toDouble(),
               qty: e['qty'],
@@ -44,6 +44,17 @@ class ProductService {
   }
 
   Future<void> deleteProduct(String uuid) async {
-    await supabase.from('products').delete().eq('uuid', uuid);
+    final user = supabase.auth.currentUser;
+    if (user == null) throw Exception("User not logged in");
+
+    final deleted = await supabase
+        .from('products')
+        .delete()
+        .eq('id', uuid)
+        .select(); // returns the deleted record(s)
+
+    if (deleted.isEmpty) {
+      throw Exception("Delete failed or no product was deleted.");
+    }
   }
 }
