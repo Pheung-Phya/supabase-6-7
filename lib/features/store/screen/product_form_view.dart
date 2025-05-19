@@ -63,21 +63,29 @@ class _ProductFormViewState extends State<ProductFormView> {
     if (pickedFile != null) {
       final supabase = Supabase.instance.client;
       final bytes = await pickedFile.readAsBytes();
-      final fileName = pickedFile.name;
+      final fileName = pickedFile.name; // dynamic file name from picked file
       final userId = supabase.auth.currentUser?.id ?? 'anonymous';
-
+      final bucket = 'image-url'; // your bucket
       final filePath = 'products/$userId/$fileName';
 
-      final response = await supabase.storage.from('image-url').uploadBinary(
-          filePath, bytes,
-          fileOptions: FileOptions(upsert: true));
+      try {
+        await supabase.storage.from(bucket).uploadBinary(filePath, bytes,
+            fileOptions: FileOptions(upsert: true));
 
-      final publicUrl =
-          supabase.storage.from('image_url').getPublicUrl(filePath);
+        final publicUrl = supabase.storage.from(bucket).getPublicUrl(filePath);
 
-      setState(() {
-        imgCtrl.text = publicUrl;
-      });
+        setState(() {
+          imgCtrl.text = publicUrl;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Image uploaded successfully')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to upload image: $e')),
+        );
+      }
     }
   }
 
@@ -92,17 +100,17 @@ class _ProductFormViewState extends State<ProductFormView> {
           child: Column(
             children: [
               GestureDetector(
-                onTap: () => chooseImage(),
+                onTap: chooseImage,
                 child: Container(
                   width: 200,
                   height: 200,
-                  color: const Color.fromARGB(255, 101, 79, 78),
-                  child: Center(child: Text('photo')),
+                  color: Colors.grey.shade300,
+                  child: imgCtrl.text.isNotEmpty
+                      ? Image.network(imgCtrl.text, fit: BoxFit.cover)
+                      : Center(child: Text('Tap to upload image')),
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
+              SizedBox(height: 30),
               Form(
                 key: _formKey,
                 child: ListView(

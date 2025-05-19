@@ -5,7 +5,7 @@ import '../controller/product_controller.dart';
 import 'product_form_view.dart';
 
 class ProductListView extends StatelessWidget {
-  final controller = Get.put(ProductController());
+  final ProductController controller = Get.put(ProductController());
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +19,32 @@ class ProductListView extends StatelessWidget {
           itemCount: controller.list.length,
           itemBuilder: (_, index) {
             final product = controller.list[index];
+
+            // Debug print to verify image URL
+            print('Loading image URL: ${product.imageUrl}');
+
             return ListTile(
               leading: (product.imageUrl != null &&
                       product.imageUrl!.isNotEmpty)
-                  ? CachedNetworkImage(imageUrl: product.imageUrl!, width: 50)
-                  : null,
+                  ? CachedNetworkImage(
+                      imageUrl: product.imageUrl!,
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Center(child: CircularProgressIndicator())),
+                      errorWidget: (context, url, error) => SizedBox(
+                          width: 50, height: 50, child: Icon(Icons.error)),
+                    )
+                  : SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Icon(Icons.image_not_supported)),
               title: Text(product.name),
-              subtitle: Text("\$${product.price} - Qty: ${product.qty}"),
+              subtitle: Text(
+                  "\$${product.price.toStringAsFixed(2)} - Qty: ${product.qty}"),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
