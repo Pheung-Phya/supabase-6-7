@@ -11,29 +11,28 @@ class ProductController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchProducts(); // Fetch products when the controller is initialized
+    fetchProducts();
   }
 
   Future<void> fetchProducts() async {
     try {
       await Future.delayed(Duration(seconds: 2));
-      list.value =
-          await _service.getAllProducts(); // Assign new data to the list
+      list.value = await _service.getAllProducts();
       log("Fetched products: ${list.length}");
     } catch (e) {
       log('Error fetching products: $e');
-      list.clear(); // Clear list in case of error
+      list.clear();
     }
   }
 
   Future<void> addProduct(Product product) async {
     await _service.createProduct(product);
-    await fetchProducts(); // Refresh the list after adding
+    await fetchProducts();
   }
 
   Future<void> updateProduct(Product product) async {
     await _service.updateProduct(product);
-    await fetchProducts(); // Refresh the list after updating
+    await fetchProducts();
   }
 
   Future<void> deleteProduct(String uuid) async {

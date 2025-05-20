@@ -40,7 +40,7 @@ class ProductService {
       'qty': product.qty,
       'description': product.description,
       'image_url': product.imageUrl,
-    }).eq('uuid', product.uuid as Object);
+    }).eq('id', product.uuid as Object);
   }
 
   Future<void> deleteProduct(String uuid) async {

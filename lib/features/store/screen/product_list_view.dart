@@ -20,7 +20,6 @@ class ProductListView extends StatelessWidget {
           itemBuilder: (_, index) {
             final product = controller.list[index];
 
-            // Debug print to verify image URL
             print('Loading image URL: ${product.imageUrl}');
 
             return ListTile(

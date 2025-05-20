@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -63,16 +65,21 @@ class _ProductFormViewState extends State<ProductFormView> {
     if (pickedFile != null) {
       final supabase = Supabase.instance.client;
       final bytes = await pickedFile.readAsBytes();
-      final fileName = pickedFile.name; // dynamic file name from picked file
+      log('byte ={$bytes}');
+      final fileName = pickedFile.name;
+      log('filename = {$fileName}');
       final userId = supabase.auth.currentUser?.id ?? 'anonymous';
-      final bucket = 'image-url'; // your bucket
+
+      final bucket = 'image-url';
       final filePath = 'products/$userId/$fileName';
+      log('pathfile{$filePath}');
 
       try {
         await supabase.storage.from(bucket).uploadBinary(filePath, bytes,
             fileOptions: FileOptions(upsert: true));
 
         final publicUrl = supabase.storage.from(bucket).getPublicUrl(filePath);
+        log('public url = {$publicUrl}');
 
         setState(() {
           imgCtrl.text = publicUrl;
